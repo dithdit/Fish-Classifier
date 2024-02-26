@@ -129,7 +129,7 @@ public class View_Results extends AppCompatActivity {
             txt_result_percentage.setText(getPercentage(maxConfidence));
             model.close();
         } catch (IOException e) {
-            // TODO Handle the exception
+
         }
     }
 

@@ -38,7 +38,7 @@ public class Testing_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_testing);
 
         btn_select = findViewById(R.id.btn_select);
-        btn_predict = findViewById(R.id.btn_predict);
+        btn_predict = findViewById(R.id.btn_capture);
 
         imageView = findViewById(R.id.view_image);
         txt_prediction = findViewById(R.id.txt_prediction);
