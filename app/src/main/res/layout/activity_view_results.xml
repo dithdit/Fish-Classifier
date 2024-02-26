@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View_Results">
+
+    <ImageView
+        android:id="@+id/img_fish"
+        android:layout_width="389dp"
+        android:layout_height="315dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Results: "
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_fish"
+        app:layout_constraintVertical_bias="0.01999998" />
+
+    <TextView
+        android:id="@+id/txt_result_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fish Class"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_fish"
+        app:layout_constraintVertical_bias="0.144" />
+
+    <TextView
+        android:id="@+id/txt_result_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100%"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_result_class"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="Predict Again"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_result_class"
+        app:layout_constraintVertical_bias="0.00999999">
+
+        <!-- Row 1 -->
+        <TableRow>
+
+            <TextView
+                android:layout_weight="1"
+                android:text="Summary"
+                android:textAlignment="center"></TextView>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:paddingStart="6dp"
+                android:text="Black Sea Sprat:"
+                android:id="@+id/table00"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:text="99.99%"
+                android:textAlignment="center"
+                android:id="@+id/table01"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingStart="6dp"
+                android:paddingHorizontal="2dp"
+                android:text="Fish Banak:"
+                android:id="@+id/table10"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:textAlignment="center"
+                android:text="99.99%"
+                android:id="@+id/table11"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:paddingStart="6dp"
+                android:text="Black Sea Sprat:"
+                android:id="@+id/table20"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:text="99.99%"
+                android:textAlignment="center"
+                android:id="@+id/table21"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingStart="6dp"
+                android:paddingHorizontal="2dp"
+                android:text="Fish Banak:"
+                android:id="@+id/table30"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:textAlignment="center"
+                android:text="99.99%"
+                android:id="@+id/table31"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:paddingStart="6dp"
+                android:text="Black Sea Sprat:"
+                android:id="@+id/table40"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:text="99.99%"
+                android:textAlignment="center"
+                android:id="@+id/table41"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingStart="6dp"
+                android:paddingHorizontal="2dp"
+                android:text="Fish Banak:"
+                android:id="@+id/table50"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:textAlignment="center"
+                android:text="99.99%"
+                android:id="@+id/table51"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:paddingStart="6dp"
+                android:text="Black Sea Sprat:"
+                android:id="@+id/table60"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:text="99.99%"
+                android:textAlignment="center"
+                android:id="@+id/table61"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingStart="6dp"
+                android:paddingHorizontal="2dp"
+                android:text="Fish Banak:"
+                android:id="@+id/table70"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:textAlignment="center"
+                android:text="99.99%"
+                android:id="@+id/table71"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:paddingStart="6dp"
+                android:text="Black Sea Sprat:"
+                android:id="@+id/table80"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:text="99.99%"
+                android:textAlignment="center"
+                android:id="@+id/table81"/>
+
+            <TextView
+                android:layout_weight="2"
+                android:paddingVertical="8dp"
+                android:paddingStart="6dp"
+                android:paddingHorizontal="2dp"
+                android:text="Fish Banak:"
+                android:id="@+id/table90"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="2dp"
+                android:textAlignment="center"
+                android:text="99.99%"
+                android:id="@+id/table91"/>
+        </TableRow>
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

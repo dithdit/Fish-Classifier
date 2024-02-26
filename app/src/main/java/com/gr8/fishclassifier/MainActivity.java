@@ -3,6 +3,7 @@ package com.gr8.fishclassifier;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -23,6 +24,8 @@ import com.gr8.fishclassifier.ml.DcModel;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn_select, btn_predict;
     ImageView imageView;
-    TextView txt_prediction;
+    TextView txt_prediction, txt_percentage;
 
     int imageSize = 64;
 
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.view_image);
         txt_prediction = findViewById(R.id.txt_prediction);
+        txt_percentage = findViewById(R.id.txt_percentage);
 
         btn_select.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,49 +69,44 @@ public class MainActivity extends AppCompatActivity {
             Bitmap image = null;
             try {
                 image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
+
+                String filename = "bitmap.png";
+                FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                stream.close();
+                image.recycle();
+
+
+                Intent intent = new Intent(this, View_Results.class);
+                intent.putExtra("image", filename);
+
+                startActivity(intent);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Bitmap image_padded = resizeWithPadding(image);
-            imageView.setImageBitmap(image_padded);
-            // Resize the image to the target size (256x256)
-            Bitmap resizedImage = Bitmap.createScaledBitmap(image_padded, imageSize, imageSize, true);
 
-            int[][] lbp_values = LBP.applyLBP(resizedImage);
-//            Bitmap lbp_image = createBitmapFromPixelValues(lbp_values);
-//            BitmapDrawable drawable = new BitmapDrawable(getResources(), lbp_image);
-//            drawable.setFilterBitmap(false);
-            //imageView.setImageDrawable(drawable);
-            //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
-            //Bitmap image_LBP = preprocessImage(image);
-            classifyImage(lbp_values,resizedImage);
+
+//            Bitmap image_padded = resizeWithPadding(image);
+//            imageView.setImageBitmap(image_padded);
+//            // Resize the image to the target size (256x256)
+//            Bitmap resizedImage = Bitmap.createScaledBitmap(image_padded, imageSize, imageSize, true);
+//
+//            int[][] lbp_values = LBP.applyLBP(resizedImage);
+////            Bitmap lbp_image = createBitmapFromPixelValues(lbp_values);
+////            BitmapDrawable drawable = new BitmapDrawable(getResources(), lbp_image);
+////            drawable.setFilterBitmap(false);
+//            //imageView.setImageDrawable(drawable);
+//            //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+//            //Bitmap image_LBP = preprocessImage(image);
+//            classifyImage(lbp_values,resizedImage);
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public Bitmap resizeWithPadding(Bitmap src) {
-        // Determine the larger dimension (width or height)
-        int largerDimension = Math.max(src.getWidth(), src.getHeight());
 
-        // Calculate the padding required for both dimensions
-        int paddingX = (largerDimension - src.getWidth()) / 2;
-        int paddingY = (largerDimension - src.getHeight()) / 2;
-
-        // Create a square output image with padding
-        Bitmap outputImage = Bitmap.createBitmap(largerDimension, largerDimension, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(outputImage);
-
-        // Draw a white background
-        canvas.drawARGB(255, 0, 0, 0);
-
-        // Draw the original image with padding
-        canvas.drawBitmap(src, paddingX, paddingY, null);
-
-
-        return outputImage;
-    }
     public void classifyImage(int[][] image, Bitmap bitmap){
         try {
             DcModel model = DcModel.newInstance(getApplicationContext());
@@ -143,13 +142,6 @@ public class MainActivity extends AppCompatActivity {
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
-
-//            String text ="";
-//            for (int i = 0; i < confidences.length; i++) {
-//                text += confidences[i] + ": ";
-//            }
-//            txt_prediction.setText(String.valueOf(confidences[0]));
-            // find the index of the class with the biggest confidence.
             int maxPos = 0;
             float maxConfidence = 0;
             for (int i = 0; i < confidences.length; i++) {
@@ -161,46 +153,13 @@ public class MainActivity extends AppCompatActivity {
             String[] classes = {"Banak","Bangus","Black Sea Sprat", "Carp",
                     "Dalag", "Bakoko", "Mackerel", "Pangasius", "Tilapia"};
             txt_prediction.setText(classes[maxPos]);
-            // Releases model resources if no longer used.
+            float perc = maxConfidence * 100;
+            String formattedValue = String.format("%.2f", perc);
+            txt_percentage.setText(formattedValue);
             model.close();
         } catch (IOException e) {
             // TODO Handle the exception
         }
     }
-    public ByteBuffer convertToByteBuffer(int[][] imageArray) {
-        int width = imageArray.length;
-        int height = imageArray[0].length;
 
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * width * height);
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                // Assuming your image values are in the range [0, 255]
-                byte pixelValue = (byte) imageArray[x][y];
-                byteBuffer.put(pixelValue);
-            }
-        }
-
-        // Reset the position to the beginning of the buffer before using it
-        byteBuffer.rewind();
-
-        return byteBuffer;
-    }
-    private Bitmap createBitmapFromPixelValues(int[][] pixelValues) {
-        int width = pixelValues.length;
-        int height = pixelValues[0].length;
-
-        Bitmap imageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                // Assuming pixelValues are grayscale values (0-255)
-                int pixelValue = pixelValues[x][y];
-                int color = Color.rgb(pixelValue, pixelValue, pixelValue);
-                imageBitmap.setPixel(x, y, color);
-            }
-        }
-
-        return imageBitmap;
-    }
 }
