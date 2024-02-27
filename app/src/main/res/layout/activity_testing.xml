@@ -15,40 +15,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/layout_linear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageButton
+        android:id="@+id/btn_flash"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/layout_bg"
+        android:src="@drawable/flash_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_select"
+        tools:src="@drawable/flash_on" />
+
+    <ImageButton
+        android:id="@+id/btn_switch"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/layout_bg"
+        android:src="@drawable/switch_camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.91"
+        app:layout_constraintStart_toEndOf="@+id/btn_flash"
+        app:layout_constraintTop_toBottomOf="@+id/btn_select"
+        tools:src="@drawable/switch_camera" />
+
+    <Button
+        android:id="@+id/btn_select"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="39dp"
+        android:text="Select Image"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_image"
-        app:layout_constraintVertical_bias="0.120000005">
+        android:backgroundTint="@android:color/black" />
 
-        <Button
-            android:id="@+id/btn_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Image" />
-
-        <Button
-            android:id="@+id/btn_capture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Predict" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/txt_prediction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This is the Testing"
+    <ImageButton
+        android:id="@+id/btn_camera"
+        android:layout_width="175dp"
+        android:layout_height="162dp"
+        android:src="@drawable/photo_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_linear"
-        app:layout_constraintVertical_bias="0.18" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_select"
+        android:background="@drawable/layout_bg"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
