@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
@@ -16,6 +17,7 @@ import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.app.Application;
@@ -30,6 +32,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -44,9 +48,10 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn_select, btn_capture;
+    Button btn_select;
+    ImageButton btn_camera, btn_flash, btn_switch;
 
-
+    LinearLayout layout_loading, layout_camera_cover;
     private PreviewView previewView;
     int cameraFacing = CameraSelector.LENS_FACING_BACK;
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -57,19 +62,30 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     });
+
+    boolean isLoading = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        layout_loading = findViewById(R.id.layout_loading);
+        layout_camera_cover = findViewById(R.id.layout_camera_cover);
+
         btn_select = findViewById(R.id.btn_select);
-        btn_capture = findViewById(R.id.btn_capture);
+        btn_camera = findViewById(R.id.btn_camera);
+        btn_switch = findViewById(R.id.btn_switch);
+        btn_flash = findViewById(R.id.btn_flash);
 
         previewView = findViewById(R.id.cameraView);
 
+        IsLoading(false);
         btn_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isLoading)return;
+                IsLoading(true);
                 Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                 startActivityForResult(cameraIntent, 1);
@@ -81,7 +97,18 @@ public class MainActivity extends AppCompatActivity {
         }else {
             startCamera(cameraFacing);
         }
-
+        btn_switch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isLoading)return;
+                if (cameraFacing == CameraSelector.LENS_FACING_BACK) {
+                    cameraFacing = CameraSelector.LENS_FACING_FRONT;
+                } else {
+                    cameraFacing = CameraSelector.LENS_FACING_BACK;
+                }
+                startCamera(cameraFacing);
+            }
+        });
     }
     public void startCamera(int cameraFacing){
         int aspectRatio = AspectRatio.RATIO_4_3;
@@ -103,22 +130,36 @@ public class MainActivity extends AppCompatActivity {
 
                 Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
 
-                btn_capture.setOnClickListener(new View.OnClickListener() {
+
+                btn_camera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if(isLoading)return;
+                        IsLoading(true);
                         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                             activityResultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                         }
-                        takePicture(imageCapture);
+                        takePicture(imageCapture, new Callback() {
+                            @Override
+                            public void BeforeEvent() {
+                                layout_camera_cover.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void AfterEvent() {
+                                layout_camera_cover.setVisibility(View.INVISIBLE);
+                            }
+                        });
                     }
                 });
 
-//                toggleFlash.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        setFlashIcon(camera);
-//                    }
-//                });
+                btn_flash.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(isLoading)return;
+                        setFlashIcon(camera);
+                    }
+                });
 
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
             } catch (ExecutionException | InterruptedException e) {
@@ -126,10 +167,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }, ContextCompat.getMainExecutor(this));
     }
-    public void takePicture(ImageCapture imageCapture){
+    public void takePicture(ImageCapture imageCapture, Callback callback){
         //final File file = new File(getExternalFilesDir(null), System.currentTimeMillis() + ".jpg");
         //ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
+
         Intent intent = new Intent(this, View_Results.class);
+        callback.BeforeEvent();
         imageCapture.takePicture(Executors.newCachedThreadPool(), new ImageCapture.OnImageCapturedCallback() {
             @Override
             public void onCaptureSuccess(@NonNull ImageProxy image) {
@@ -153,42 +196,73 @@ public class MainActivity extends AppCompatActivity {
 
                         intent.putExtra("image", filename);
                         startActivity(intent);
+                        IsLoading(false);
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     }
 
                 }
+                callback.AfterEvent();
             }
         });
     }
+    private void setFlashIcon(Camera camera) {
+        if (camera.getCameraInfo().hasFlashUnit()) {
+            if (camera.getCameraInfo().getTorchState().getValue() == 0) {
+                camera.getCameraControl().enableTorch(true);
+               // toggleFlash.setImageResource(R.drawable.baseline_flash_off_24);
+            } else {
+                camera.getCameraControl().enableTorch(false);
+                //toggleFlash.setImageResource(R.drawable.baseline_flash_on_24);
+            }
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Flash is not available currently", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 1){
-            //Toast.makeText(this, "Got", Toast.LENGTH_SHORT).show();
-            Uri dat = data.getData();
-            Bitmap image = null;
-            try {
-                image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
+        if(resultCode != RESULT_CANCELED) {
+            if (requestCode == 1) {
+                //Toast.makeText(this, "Got", Toast.LENGTH_SHORT).show();
+                Uri dat = data.getData();
+                Bitmap image = null;
+                try {
+                    image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
 
-                String filename = "bitmap.png";
-                FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
-                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    String filename = "bitmap.png";
+                    FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
+                    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
-                stream.close();
-                image.recycle();
+                    stream.close();
+                    image.recycle();
 
 
-                Intent intent = new Intent(this, View_Results.class);
-                intent.putExtra("image", filename);
+                    Intent intent = new Intent(this, View_Results.class);
+                    intent.putExtra("image", filename);
+                    startActivity(intent);
+                    IsLoading(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                startActivity(intent);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
         }
-
+        IsLoading(false);
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    void IsLoading(boolean isLoading){
+        this.isLoading = isLoading;
+        int visibility = View.INVISIBLE;
+        if(isLoading) visibility = View.VISIBLE;
+        layout_loading.setVisibility(visibility);
+    }
+    public interface Callback{
+        void BeforeEvent();
+        void AfterEvent();
+    }
 }

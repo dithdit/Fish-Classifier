@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +27,8 @@ import java.nio.ByteOrder;
 
 public class Testing_Activity extends AppCompatActivity {
 
-    Button btn_select, btn_predict;
+    Button btn_select;
+    ImageButton btn_camera;
     ImageView imageView;
     TextView txt_prediction;
 
@@ -38,7 +40,7 @@ public class Testing_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_testing);
 
         btn_select = findViewById(R.id.btn_select);
-        btn_predict = findViewById(R.id.btn_camera);
+        btn_camera = findViewById(R.id.btn_camera);
 
         imageView = findViewById(R.id.view_image);
 
