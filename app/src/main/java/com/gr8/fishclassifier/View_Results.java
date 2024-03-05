@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gr8.fishclassifier.ml.AutoModel4dUniform64;
 import com.gr8.fishclassifier.ml.DcModel;
 
 import org.tensorflow.lite.DataType;
@@ -73,29 +74,32 @@ public class View_Results extends AppCompatActivity {
         //Preprocess the image
         Bitmap resizedImage = Bitmap.createScaledBitmap(image_padded, imageSize, imageSize, true);
         int[][] lbp_values = LBP.applyLBP(resizedImage);
-
+        //img_fish.setImageBitmap(createBitmapFromIntArray(lbp_values));
         //Classify image
         classifyImage(lbp_values,resizedImage);
     }
 
     public void classifyImage(int[][] image, Bitmap bitmap){
         try {
-            DcModel model = DcModel.newInstance(getApplicationContext());
-
+            //DcModel model = DcModel.newInstance(getApplicationContext());
+            AutoModel4dUniform64 model = AutoModel4dUniform64.newInstance(getApplicationContext());
             // Creates inputs for reference.
-            TensorBuffer inputFeature_lbp = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 1}, DataType.FLOAT32);
-            TensorBuffer inputFeature_rgb = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
+            TensorBuffer inputFeature_rgb = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 4}, DataType.FLOAT32);
 
-            ByteBuffer byteBuffer_lbp = ByteBuffer.allocateDirect(4 * imageSize * imageSize).order(ByteOrder.nativeOrder());
-            ByteBuffer byteBuffer_rgb = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3).order(ByteOrder.nativeOrder());
+            ByteBuffer byteBuffer_rgb = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 4).order(ByteOrder.nativeOrder());
 
+            int[] lbpValues = new int[imageSize * imageSize];
+            int lbp_count = 0;
             for(int i=0; i<image[0].length;i++){
                 for(int j=0; j<image.length;j++){
-                    byteBuffer_lbp.putFloat(image[j][i] * (1.f / 1));
+                    lbpValues[lbp_count] = image[j][i];
+                    lbp_count++;
                 }
             }
             int[] intValues = new int[imageSize * imageSize];
             bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+            int count = 0;
             for (int val : intValues) {
                 int red = Color.red(val);
                 int green = Color.green(val);
@@ -103,13 +107,14 @@ public class View_Results extends AppCompatActivity {
                 byteBuffer_rgb.putFloat( red * (1.f / 1));
                 byteBuffer_rgb.putFloat( green * (1.f / 1));
                 byteBuffer_rgb.putFloat(blue * (1.f / 1));
+                byteBuffer_rgb.putFloat(lbpValues[count] * (1.f / 1));
             }
-            //ByteBuffer byteBuffer = convertToByteBuffer(image);
-            inputFeature_lbp.loadBuffer(byteBuffer_lbp);
+
             inputFeature_rgb.loadBuffer(byteBuffer_rgb);
 
             // Runs model inference and gets result.
-            DcModel.Outputs outputs = model.process(inputFeature_lbp,inputFeature_rgb);
+            AutoModel4dUniform64.Outputs outputs = model.process(inputFeature_rgb);
+            //DcModel.Outputs outputs = model.process(inputFeature_lbp,inputFeature_rgb);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
@@ -202,5 +207,19 @@ public class View_Results extends AppCompatActivity {
             String perc = (i < values.length)? getPercentage(values[i]): null;
             table_percentages[i].setText(perc);
         }
+    }
+    public static Bitmap createBitmapFromIntArray(int[][] pixelData) {
+        int width = pixelData.length;
+        int height = pixelData[0].length;
+
+        int[] pixels = new int[width * height];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                pixels[x * height + y] = pixelData[x][y];
+            }
+        }
+
+        return Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
     }
 }
