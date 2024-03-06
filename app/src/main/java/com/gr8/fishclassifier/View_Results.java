@@ -25,23 +25,26 @@ import java.nio.ByteOrder;
 
 public class View_Results extends AppCompatActivity {
 
-    ImageView img_fish;
-    TextView txt_result_class,txt_result_percentage;
+    ImageView img_fish, img_fish_blur;
+    TextView txt_result_class,txt_result_percentage, txt_desc;
     TextView[] table_titles, table_percentages;
 
-    Button btn_reset;
+    Button btn_reset, btn_info;
     int imageSize=64;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_results);
+        setContentView(R.layout.activity_view_results_v2);
 
         img_fish = findViewById(R.id.img_fish);
+        img_fish_blur = findViewById(R.id.img_fish_blur);
 
         txt_result_class = findViewById(R.id.txt_result_class);
         txt_result_percentage =  findViewById(R.id.txt_result_percentage);
+        txt_desc = findViewById(R.id.txt_desc);
 
         btn_reset = findViewById(R.id.btn_reset);
+        btn_info = findViewById(R.id.btn_info);
 
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +68,13 @@ public class View_Results extends AppCompatActivity {
             e.printStackTrace();
         }
         if(bmp==null)return;
+        //Bitmap image_view = Bitmap.createScaledBitmap(bmp, 512, 512, true);
+        img_fish.setImageBitmap(bmp);
+
+        Bitmap blurredBitmap = BlurUtility.blur(this, bmp);
+        img_fish_blur.setImageBitmap(blurredBitmap);
 
         Bitmap image_padded = resizeWithPadding(bmp);
-        //Set the image for the 1st image view
-        Bitmap image_view = Bitmap.createScaledBitmap(image_padded, 512, 512, true);
-        img_fish.setImageBitmap(image_view);
 
         //Preprocess the image
         Bitmap resizedImage = Bitmap.createScaledBitmap(image_padded, imageSize, imageSize, true);
@@ -130,8 +135,13 @@ public class View_Results extends AppCompatActivity {
                     "Dalag", "Bakoko", "Mackerel", "Pangasius", "Tilapia"};
             assignTableTitles(classes);
             assignTablePercentages(confidences);
-            txt_result_class.setText(classes[maxPos]);
+            String fishClass = classes[maxPos];
+            txt_result_class.setText(fishClass);
             txt_result_percentage.setText(getPercentage(maxConfidence));
+
+            SetDescriptionText(fishClass,maxConfidence);
+            SetButtonInfoText(fishClass);
+
             model.close();
         } catch (IOException e) {
 
@@ -221,5 +231,14 @@ public class View_Results extends AppCompatActivity {
         }
 
         return Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
+    }
+    public void SetDescriptionText(String fishClass, float perc){
+        String text = "The system predicted the image to be "
+                + getPercentage(perc) +" " + fishClass;
+        txt_desc.setText(text);
+    }
+    public void SetButtonInfoText(String fishClass){
+        String text = "More Information about "+fishClass;
+        btn_info.setText(text);
     }
 }

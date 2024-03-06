@@ -48,8 +48,8 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn_select;
-    ImageButton btn_camera, btn_flash, btn_switch;
+
+    ImageButton btn_camera, btn_flash, btn_switch, btn_select;
 
     LinearLayout layout_loading, layout_camera_cover;
     private PreviewView previewView;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_v2);
 
         layout_loading = findViewById(R.id.layout_loading);
         layout_camera_cover = findViewById(R.id.layout_camera_cover);
