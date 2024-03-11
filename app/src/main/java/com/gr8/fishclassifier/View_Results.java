@@ -2,6 +2,7 @@ package com.gr8.fishclassifier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gr8.fishclassifier.ml.AutoModel4dUniform64;
-import com.gr8.fishclassifier.ml.DcModel;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -31,6 +31,8 @@ public class View_Results extends AppCompatActivity {
 
     Button btn_reset, btn_info;
     int imageSize=64;
+
+    int predicted_fish = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class View_Results extends AppCompatActivity {
 
         txt_result_class = findViewById(R.id.txt_result_class);
         txt_result_percentage =  findViewById(R.id.txt_result_percentage);
-        txt_desc = findViewById(R.id.txt_desc);
+        txt_desc = findViewById(R.id.txt_info);
 
         btn_reset = findViewById(R.id.btn_reset);
         btn_info = findViewById(R.id.btn_info);
@@ -50,6 +52,14 @@ public class View_Results extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        btn_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), More_Info.class);
+                intent.putExtra("fish_int",predicted_fish);
+                startActivity(intent);
             }
         });
 
@@ -131,11 +141,12 @@ public class View_Results extends AppCompatActivity {
                     maxPos = i;
                 }
             }
-            String[] classes = {"Banak","Bangus","Black Sea Sprat", "Carp",
-                    "Dalag", "Bakoko", "Mackerel", "Pangasius", "Tilapia"};
+            String[] classes = {"Banak","Bangus","Sardine", "Carp",
+                    "Dalag", "Bakoko", "Salay Salay", "Pangasius", "Tilapia"};
             assignTableTitles(classes);
             assignTablePercentages(confidences);
             String fishClass = classes[maxPos];
+            predicted_fish = maxPos;
             txt_result_class.setText(fishClass);
             txt_result_percentage.setText(getPercentage(maxConfidence));
 
