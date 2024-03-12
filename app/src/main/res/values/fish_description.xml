@@ -1,111 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bakoko_desc">
-        \tBakoko, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tBakoko fish, also known as Sea Bream, is a common saltwater species found in the Philippines, prized for its delicate flavor and versatility in cooking.
+        \n\nIt is a popular choice in Filipino cuisine and often featured in dishes such as sinigang na isda (fish sour soup) and paksiw na isda (fish braised in vinegar).
+        \n\nBakoko fish are known for their silvery scales, deep bodies, and distinctive forked tails.
+        \n\nThey inhabit coastal waters and coral reefs, feeding on small fish, crustaceans, and mollusks.
+        \n\nBakoko are known for their high nutritional value, being rich sources of protein, omega-3 fatty acids, vitamins, and minerals, contributing to a healthy diet when consumed regularly.
 
     </string>
     <string name="banak_desc">
-        \tBanak, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tBanak, also known as Sea Mullet, are commonly found in brackish or coastal waters throughout the Philippines.
+        \n\nIt has elongated bodies and silvery scales, typically growing to a moderate size ranging from 20 to 50 centimeters in length.
+        \n\nBanak are herbivorous fish, feeding primarily on algae, plankton, and detritus, contributing to coastal ecosystem balance.
+        \n\nPrized for its firm texture and mild flavor, Banak is versatile in Filipino cuisine and used in dishes like sinigang, paksiw, and kinilaw.
+        \n\nDue to its abundance and affordability, Banak is a popular choice among Filipino households and local markets.
 
     </string>
     <string name="bangus_desc">
-        \tBangus, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tBangus, also known as Milkfish, is the national fish of the Philippines, deeply rooted in Filipino culture and cuisine.
+        \n\nBangus farming is a vital industry in the Philippines, supporting livelihoods and contributing to both domestic consumption and export.
+        \n\nBangus is cultivated through various methods, including freshwater ponds, brackish water areas, and sea cages.
+        \n\nBangus is a versatile ingredient in Filipino cuisine, prepared in numerous ways such as grilling, frying, or stewing.
+        \n\nBangus is rich in protein, vitamins, and omega-3 fatty acids, offering nutritional benefits for consumers.
 
     </string>
     <string name="carp_desc">
-        \tCarp, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tCarp, is a freshwater species widely found in the Philippines, recognized for its hardiness and adaptability to various aquatic environments.
+        \n\nIt is characterized by its robust body, typically olive-green or bronze in color, with scales along its sides and a pair of barbels near its mouth.
+        \n\Carp fish is omnivorous, feeding on a diet of plants, insects, crustaceans, and small fish, contributing to its role in ecosystem balance and nutrient cycling.
+        \n\nThis fish species is commonly cultivated in ponds, lakes, and rivers for aquaculture purposes due to its rapid growth rate and high reproductive capacity.
+        \n\nCarp fish is valued for its tender flesh and mild flavor, making it suitable for various cooking methods such as frying, grilling, baking, or steaming.
+        \n\nWhen purchasing carp fish from local markets, consumers should ensure its freshness by checking for clear eyes, firm flesh, and a mild odor, and should store it properly to maintain its quality for cooking.
 
     </string>
     <string name="dalag_desc">
-        \tDalag, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tDalag, also known as Mudfish, is a freshwater species native to the Philippines, often found in rivers, lakes, and swamps.
+        \n\nIt is characterized by its elongated body, olive-brown coloration, and distinctive ability to breathe air and travel short distances over land.
+        \n\nDalag fish is omnivorous, feeding on a diet of small fish, insects, crustaceans, and vegetation, contributing to its adaptability to various aquatic environments.
+        \n\nKnown for its firm texture and flavorful flesh, dalag fish is a popular ingredient in Filipino cuisine and is used in dishes such as sinigang, paksiw, and adobo.
+        \n\nWhile dalag fish is readily available in local markets, consumers should ensure its freshness by checking for clear eyes, firm flesh, and a mild odor, and should store it properly to maintain its quality for cooking.
 
     </string>
     <string name="pangasius_desc">
-        \tPangasius, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tPangasius fish, also known as Cream Dory, is characterized by its mild flavor, white flesh, and relatively low cost, making it a popular choice in the local market and restaurant industry.
+        \n\nPangasius is known for its rapid growth rate and high yield in aquaculture settings, contributing to its affordability and availability in the Philippines.
+        \n\nPangasius is rich in protein, low in fat, and a good source of essential nutrients like vitamins D and B12, making it a nutritious option for consumers.
+        \n\nPangasius is versatile in cooking and can be prepared in various ways such as grilling, frying, baking, or steaming, offering flexibility in culinary applications.
+        \n\nWhen purchasing Pangasius, consumers should ensure its freshness and quality by checking for clear, bright eyes, firm flesh, and a mild odor, and should store it properly to maintain its freshness and safety for consumption.
 
     </string>
     <string name="salay_salay_desc">
-        \tSalay Salay, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+       \t\tSalay-salay fish, also known as horse mackerel, is a common saltwater species found in the Philippines, characterized by its elongated body and silvery coloration.
+        \n\nIt is known for its firm, flavorful flesh and is often prized for its culinary versatility, suitable for grilling, frying, baking, or steaming.
+        \n\nSalay-salay fish is rich in omega-3 fatty acids, protein, and essential nutrients, making it a nutritious choice for consumers.
+        \n\nThis fish species is commonly found in coastal waters and feeds on small fish, crustaceans, and plankton, contributing to its robust flavor profile.
+        \n\nWhen selecting salay-salay fish from local markets, consumers should ensure freshness by checking for clear eyes, firm flesh, and a mild sea scent, and should store it properly to maintain its quality for cooking.
 
     </string>
     <string name="sardine_desc">
-        \tSardine, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tSardine, is a small, oily fish species found in abundance in Philippine waters, particularly along coastal areas and near shorelines.
+        \n\nIt is characterized by its silver-colored body, streamlined shape, and distinctive flavor, which is slightly sweet and briny.
+        \n\nSardines are known for their high omega-3 fatty acid content, making them a nutritious choice that supports heart health and brain function.
+        \n\nThis fish species is commonly found in large schools, making them easy to catch and a significant part of local fisheries in the Philippines.
+        \n\nSardines are often consumed fresh, canned, or preserved in various ways, such as pickling or smoking, and are a staple ingredient in Filipino dishes like pinangat, ginataan, and kilawin.
+        \n\nWhen purchasing sardines from local markets, consumers should look for bright, clear eyes, shiny scales, and firm flesh, and should store them properly to maintain their freshness and flavor.
 
     </string>
     <string name="tilapia_desc">
-        \tTilapia, also known as milkfish, is a versatile and nutritious fish widely celebrated in Filipino cuisine.
-
-        \n\nWith its mild flavor making it ideal for grilling or stewing; rich in protein and essential nutrients, it plays a crucial role in supporting livelihoods through extensive aquaculture practices and underscores the importance of sustainable farming methods.
-
-        \n\nCulinary Appeal: Enjoyed grilled or stewed, bangus is a culinary favorite in Filipino dishes.
-
-        \n\nNutrient-Rich Goodness: Packed with protein, omega-3 fatty acids, and essential nutrients, making it a healthy dietary choice.
-
-        \n\nEconomic Contribution: Extensive aquaculture practices significantly contribute to local economies and support livelihoods.
+        \t\tTilapia fish is one of the most widely cultured and consumed freshwater fish species in the Philippines, valued for its mild taste and versatile culinary applications.
+        \n\nIt is commonly raised in fishponds, lakes, and freshwater reservoirs throughout the country due to its adaptability to various environmental conditions.
+        \n\nTilapia is known for its fast growth rate, high reproductive capacity, and resilience to disease, making it an economically important aquaculture species.
+        \n\nIn Filipino cuisine, tilapia is prepared in various ways such as grilled, fried, steamed, or used in soups and stews like sinigang and nilaga.
+        \n\nTilapia is a nutritious source of protein, low in fat, and rich in essential nutrients like vitamins D and B12, making it a popular choice for health-conscious consumers.
 
     </string>
 </resources>
