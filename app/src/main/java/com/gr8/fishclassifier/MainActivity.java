@@ -37,7 +37,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -185,27 +188,37 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap capturedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 image.close();
 
-                // Update UI or perform any action with capturedBitmap
-                if (capturedBitmap != null) {
-                    String filename = "bitmap.png";
-                    FileOutputStream stream = null;
-                    try {
-                        stream = MainActivity.this.openFileOutput(filename, Context.MODE_PRIVATE);
-                        capturedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                        capturedBitmap.recycle();
-
-                        intent.putExtra("image", filename);
-                        startActivity(intent);
-                        IsLoading(false);
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
+                CropImage.activity(getImageUri(getApplicationContext(),capturedBitmap))
+                        .setAspectRatio(1, 1)
+                        .start(MainActivity.this);
+//                // Update UI or perform any action with capturedBitmap
+//                if (capturedBitmap != null) {
+//                    String filename = "bitmap.png";
+//                    FileOutputStream stream = null;
+//                    try {
+//                        stream = MainActivity.this.openFileOutput(filename, Context.MODE_PRIVATE);
+//                        capturedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                        capturedBitmap.recycle();
+//
+//                        intent.putExtra("image", filename);
+//                        startActivity(intent);
+//                        IsLoading(false);
+//                    } catch (FileNotFoundException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//
+//                }
                 callback.AfterEvent();
             }
         });
     }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
     private void setFlashIcon(Camera camera) {
         if (camera.getCameraInfo().hasFlashUnit()) {
             if (camera.getCameraInfo().getTorchState().getValue() == 0) {
@@ -224,15 +237,44 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode != RESULT_CANCELED) {
             if (requestCode == 1) {
                 //Toast.makeText(this, "Got", Toast.LENGTH_SHORT).show();
                 Uri dat = data.getData();
+                CropImage.activity(dat)
+                        .setAspectRatio(1, 1)
+                        .start(MainActivity.this);
+//                Bitmap image = null;
+//                try {
+//                    image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
+//
+//                    String filename = "bitmap.png";
+//                    FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
+//                    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//
+//                    stream.close();
+//                    image.recycle();
+//
+//
+//                    Intent intent = new Intent(this, View_Results.class);
+//                    intent.putExtra("image", filename);
+//                    startActivity(intent);
+//                    IsLoading(false);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+            }
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
                 Bitmap image = null;
                 try {
-                    image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
+                    image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
 
                     String filename = "bitmap.png";
                     FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
@@ -249,7 +291,8 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
             }
         }
         IsLoading(false);
