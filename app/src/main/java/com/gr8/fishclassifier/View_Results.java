@@ -80,13 +80,13 @@ public class View_Results extends AppCompatActivity {
         }
         if(bmp==null)return;
         //Bitmap image_view = Bitmap.createScaledBitmap(bmp, 512, 512, true);
-        img_fish.setImageBitmap(bmp);
+
 
         Bitmap blurredBitmap = BlurUtility.blur(this, bmp);
         img_fish_blur.setImageBitmap(blurredBitmap);
 
         Bitmap image_padded = resizeWithPadding(bmp);
-
+        img_fish.setImageBitmap(image_padded);
         //Preprocess the image
         Bitmap resizedImage = Bitmap.createScaledBitmap(image_padded, imageSize, imageSize, true);
         int[][] lbp_values = LBP.applyLBP(resizedImage);
