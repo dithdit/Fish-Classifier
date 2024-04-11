@@ -85,10 +85,10 @@ public class View_Results extends AppCompatActivity {
         Bitmap blurredBitmap = BlurUtility.blur(this, bmp);
         img_fish_blur.setImageBitmap(blurredBitmap);
 
-        Bitmap image_padded = resizeWithPadding(bmp);
+        //Bitmap image_padded = resizeWithPadding(bmp);
 
         //Preprocess the image
-        Bitmap resizedImage = Bitmap.createScaledBitmap(image_padded, imageSize, imageSize, true);
+        Bitmap resizedImage = Bitmap.createScaledBitmap(bmp, imageSize, imageSize, true);
         int[][] lbp_values = LBP.applyLBP(resizedImage);
         //img_fish.setImageBitmap(createBitmapFromIntArray(lbp_values));
         //Classify image

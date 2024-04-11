@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -188,9 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap capturedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 image.close();
 
-                CropImage.activity(getImageUri(getApplicationContext(),capturedBitmap))
-                        .setAspectRatio(1, 1)
-                        .start(MainActivity.this);
+                BitmapCrop(capturedBitmap);
 //                // Update UI or perform any action with capturedBitmap
 //                if (capturedBitmap != null) {
 //                    String filename = "bitmap.png";
@@ -212,11 +211,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+    private Uri getImageUriFromBitmap(Context context, Bitmap bitmap) {
+        Uri uri = null;
+        try {
+            File tempFile = File.createTempFile("temp_image", ".jpg", context.getCacheDir());
+            FileOutputStream out = new FileOutputStream(tempFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            uri = Uri.fromFile(tempFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uri;
     }
 
     private void setFlashIcon(Camera camera) {
@@ -238,34 +245,51 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    void BitmapCrop(Bitmap image){
+        Bitmap paddedImage = resizeWithPadding(image);
+        Uri imageUri = getImageUriFromBitmap(getApplicationContext(),paddedImage);
+
+        CropImage.activity(imageUri)
+                .setAspectRatio(1, 1)
+                .start(MainActivity.this);
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode != RESULT_CANCELED) {
             if (requestCode == 1) {
                 //Toast.makeText(this, "Got", Toast.LENGTH_SHORT).show();
                 Uri dat = data.getData();
-                CropImage.activity(dat)
-                        .setAspectRatio(1, 1)
-                        .start(MainActivity.this);
-//                Bitmap image = null;
-//                try {
-//                    image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
+
+                Bitmap image = null;
+                try {
+                    image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
+
+                    String filename = "bitmap.png";
+                    FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
+                    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                    BitmapCrop(image);
+
+                    stream.close();
+                    image.recycle();
+
+//                    Uri imageUri = getImageUriFromBitmap(getApplicationContext(),paddedImage);
 //
-//                    String filename = "bitmap.png";
-//                    FileOutputStream stream = this.openFileOutput(filename, Context.MODE_PRIVATE);
-//                    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//
-//                    stream.close();
-//                    image.recycle();
+//                    CropImage.activity(imageUri)
+//                            .setAspectRatio(1, 1)
+//                            .start(MainActivity.this);
+
 //
 //
 //                    Intent intent = new Intent(this, View_Results.class);
 //                    intent.putExtra("image", filename);
 //                    startActivity(intent);
 //                    IsLoading(false);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -297,6 +321,28 @@ public class MainActivity extends AppCompatActivity {
         }
         IsLoading(false);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    public Bitmap resizeWithPadding(Bitmap src) {
+
+        // Determine the larger dimension (width or height)
+        int largerDimension = Math.max(src.getWidth(), src.getHeight());
+
+        // Calculate the padding required for both dimensions
+        int paddingX = (largerDimension - src.getWidth()) / 2;
+        int paddingY = (largerDimension - src.getHeight()) / 2;
+
+        // Create a square output image with padding
+        Bitmap outputImage = Bitmap.createBitmap(largerDimension, largerDimension, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(outputImage);
+
+        // Draw a white background
+        canvas.drawARGB(255, 0, 0, 0);
+
+        // Draw the original image with padding
+        canvas.drawBitmap(src, paddingX, paddingY, null);
+
+
+        return outputImage;
     }
     void IsLoading(boolean isLoading){
         this.isLoading = isLoading;
