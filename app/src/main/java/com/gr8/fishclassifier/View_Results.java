@@ -31,7 +31,7 @@ public class View_Results extends AppCompatActivity {
     TextView[] table_titles, table_percentages;
 
     Button btn_reset, btn_info;
-    int imageSize=100;
+    int imageSize=64;
 
     int predicted_fish = 0;
     @Override
@@ -98,10 +98,10 @@ public class View_Results extends AppCompatActivity {
     public void classifyImage(int[][] image, Bitmap bitmap){
         try {
             //DcModel model = DcModel.newInstance(getApplicationContext());
-            //AutoModel4dUniform64 model = AutoModel4dUniform64.newInstance(getApplicationContext());
-            FourthModel model = FourthModel.newInstance(getApplicationContext());
+            AutoModel4dUniform64 model = AutoModel4dUniform64.newInstance(getApplicationContext());
+            //FourthModel model = FourthModel.newInstance(getApplicationContext());
             // Creates inputs for reference.
-            TensorBuffer inputFeature_rgb = TensorBuffer.createFixedSize(new int[]{1, 100, 100, 4}, DataType.FLOAT32);
+            TensorBuffer inputFeature_rgb = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 4}, DataType.FLOAT32);
 
             ByteBuffer byteBuffer_rgb = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 4).order(ByteOrder.nativeOrder());
 
@@ -130,8 +130,8 @@ public class View_Results extends AppCompatActivity {
             inputFeature_rgb.loadBuffer(byteBuffer_rgb);
 
             // Runs model inference and gets result.
-            //AutoModel4dUniform64.Outputs outputs = model.process(inputFeature_rgb);
-            FourthModel.Outputs outputs = model.process(inputFeature_rgb);
+            AutoModel4dUniform64.Outputs outputs = model.process(inputFeature_rgb);
+            //FourthModel.Outputs outputs = model.process(inputFeature_rgb);
             //DcModel.Outputs outputs = model.process(inputFeature_lbp,inputFeature_rgb);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
