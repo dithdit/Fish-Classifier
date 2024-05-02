@@ -100,19 +100,13 @@ public class View_Results extends AppCompatActivity {
 
     public void classifyImage(int[][] image, Bitmap bitmap){
         try {
-            DcModel model = DcModel.newInstance(getApplicationContext());
-            //AutoModel4dUniform64 model = AutoModel4dUniform64.newInstance(getApplicationContext());
+            //DcModel model = DcModel.newInstance(getApplicationContext());
+            AutoModel4dUniform64 model = AutoModel4dUniform64.newInstance(getApplicationContext());
             //FourthModel model = FourthModel.newInstance(getApplicationContext());
             // Creates inputs for reference.
-            TensorBuffer inputFeature_lbp = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 1}, DataType.FLOAT32);
-            TensorBuffer inputFeature_rgb = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
+            TensorBuffer inputFeature_rgb = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 4}, DataType.FLOAT32);
 
-
-
-            //TensorBuffer inputFeature_rgb = TensorBuffer.createFixedSize(new int[]{1, 100, 100, 4}, DataType.FLOAT32);
-
-            ByteBuffer byteBuffer_rgb = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3).order(ByteOrder.nativeOrder());
-            ByteBuffer byteBuffer_lbp = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 1).order(ByteOrder.nativeOrder());
+            ByteBuffer byteBuffer_rgb = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 4).order(ByteOrder.nativeOrder());
 
             int[] lbpValues = new int[imageSize * imageSize];
             int lbp_count = 0;
@@ -133,16 +127,15 @@ public class View_Results extends AppCompatActivity {
                 byteBuffer_rgb.putFloat( red * (1.f / 1));
                 byteBuffer_rgb.putFloat( green * (1.f / 1));
                 byteBuffer_rgb.putFloat(blue * (1.f / 1));
-                byteBuffer_lbp.putFloat(lbpValues[count] * (1.f / 1));
+                byteBuffer_rgb.putFloat(lbpValues[count] * (1.f / 1));
             }
 
             inputFeature_rgb.loadBuffer(byteBuffer_rgb);
-            inputFeature_lbp.loadBuffer(byteBuffer_lbp);
 
             // Runs model inference and gets result.
+            AutoModel4dUniform64.Outputs outputs = model.process(inputFeature_rgb);
             //FourthModel.Outputs outputs = model.process(inputFeature_rgb);
-            //AutoModel4dUniform64.Outputs outputs = model.process(inputFeature_rgb);
-            DcModel.Outputs outputs = model.process(inputFeature_lbp,inputFeature_rgb);
+            //DcModel.Outputs outputs = model.process(inputFeature_lbp,inputFeature_rgb);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
